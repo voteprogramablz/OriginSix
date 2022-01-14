@@ -25,3 +25,32 @@ window.addEventListener("scroll", function () {
     header.classList.remove("scroll");
   }
 });
+
+// Testimonials carousel slider swiper
+
+const swiper = new Swiper(".swiper", {
+  slidesPerView: 1,
+  pagination: {
+    el: ".swiper-pagination",
+  },
+  mousewheel: false,
+  keyboard: true,
+});
+
+// Scroll Reveal: mostrar elementos quando der scroll na pagina
+const scrollReveal = ScrollReveal({
+  orign: "top",
+  distance: "30px",
+  duration: 700,
+  reset: true,
+});
+
+scrollReveal.reveal(
+  `#home .text, #home .image,
+  #about .image, #about .text,
+  #services header, #services .card,
+  #testimonials header, #testimonials .testimonials,
+  #contact .text, #contact .links
+  `,
+  { interval: 100 }
+);
