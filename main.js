@@ -38,6 +38,12 @@ const swiper = new Swiper(".swiper", {
   },
   mousewheel: false,
   keyboard: true,
+  breakpoints: {
+    767: {
+      slidesPerView: 2,
+      setWrapperSize: true,
+    },
+  },
 });
 
 // Scroll Reveal: mostrar elementos quando der scroll na pagina
@@ -77,4 +83,23 @@ const arrayOfScrollEvents = [handleBackToTop, changeHeaderWhenScroll];
 
 for (const callback of arrayOfScrollEvents) {
   window.addEventListener("scroll", callback);
+}
+
+// Menu ativo conforme a seção visível na página
+
+const menuItens = document.querySelectorAll("#header .menu ul li .title");
+const menuItensIds = [...menuItens].map((item) => item.attributes[1].nodeValue);
+
+for (const section of menuItensIds) {
+  const sectionToScroll = document.querySelector(section);
+
+  const isVisible =
+    sectionToScroll.getBoundingClientRect().y > 0 &&
+    sectionToScroll.getBoundingClientRect().y < window.innerHeight;
+
+  if (isVisible) {
+    const menuLinkActive = document.querySelector(`a[href='${section}]'`);
+    console.log("Item visivel", menuLinkActive);
+  }
+  console.log(section, isVisible);
 }
