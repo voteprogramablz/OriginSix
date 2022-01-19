@@ -18,10 +18,9 @@ for (const link of links) {
 // mudar o header da página ao dar scroll
 
 const header = document.querySelector("#header");
+const navHeight = header.offsetHeight;
 
 const changeHeaderWhenScroll = () => {
-  const navHeight = header.offsetHeight;
-
   if (this.window.scrollY >= navHeight) {
     header.classList.add("scroll");
   } else {
@@ -68,10 +67,9 @@ scrollReveal.reveal(
 // Botão voltar para o topo
 
 const backToTopButton = document.querySelector(".back-to-top");
+const windowHeight = window.innerHeight;
 
 const handleBackToTop = () => {
-  const windowHeight = window.innerHeight;
-
   if (window.scrollY >= windowHeight) {
     backToTopButton.classList.add("show");
   } else {
@@ -79,27 +77,39 @@ const handleBackToTop = () => {
   }
 };
 
-const arrayOfScrollEvents = [handleBackToTop, changeHeaderWhenScroll];
-
-for (const callback of arrayOfScrollEvents) {
-  window.addEventListener("scroll", callback);
-}
-
 // Menu ativo conforme a seção visível na página
 
-const menuItens = document.querySelectorAll("#header .menu ul li .title");
-const menuItensIds = [...menuItens].map((item) => item.attributes[1].nodeValue);
+const sections = document.querySelectorAll("main section[id]");
 
-for (const section of menuItensIds) {
-  const sectionToScroll = document.querySelector(section);
+const activateMenuAtCurrentSection = () => {
+  const checkpoint = window.pageYOffset + (window.innerHeight / 8) * 4;
 
-  const isVisible =
-    sectionToScroll.getBoundingClientRect().y > 0 &&
-    sectionToScroll.getBoundingClientRect().y < window.innerHeight;
+  for (const section of sections) {
+    const sectionTop = section.offsetTop;
+    const sectionHeight = section.offsetHeight;
+    const sectionId = section.getAttribute("id");
 
-  if (isVisible) {
-    const menuLinkActive = document.querySelector(`a[href='${section}]'`);
-    console.log("Item visivel", menuLinkActive);
+    const checkpointStart = checkpoint >= sectionTop;
+    const checkpointEnd = checkpoint <= sectionTop + sectionHeight;
+
+    if (checkpointStart && checkpointEnd) {
+      document
+        .querySelector("nav ul li a[href*=" + sectionId + "]")
+        .classList.add("active");
+    } else {
+      document
+        .querySelector("nav ul li a[href*=" + sectionId + "]")
+        .classList.remove("active");
+    }
   }
-  console.log(section, isVisible);
+};
+
+const arrayOfScrollEvents = [
+  handleBackToTop,
+  changeHeaderWhenScroll,
+  activateMenuAtCurrentSection,
+];
+// When scroll
+for (const callback of arrayOfScrollEvents) {
+  window.addEventListener("scroll", callback);
 }

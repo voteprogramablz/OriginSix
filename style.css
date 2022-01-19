@@ -158,7 +158,8 @@ nav ul li a {
   position: relative;
 }
 
-nav ul li a:hover {
+nav ul li a:hover,
+nav ul li a.active {
   color: var(--base-color);
 }
 
@@ -177,8 +178,7 @@ nav ul li a::after {
 }
 
 nav ul li a:hover::after,
-nav ul li a.active::after
- {
+nav ul li a.active::after {
   width: 100%;
 }
 
@@ -588,6 +588,10 @@ LARGE DEVICES: 992 >
     font: 400 1rem var(--title-font);
   }
 
+  nav .menu ul li a.active {
+    font-weight: bold;
+  }
+
   /* Layout */
 
   main {
@@ -595,8 +599,6 @@ LARGE DEVICES: 992 >
   }
 
   /* Home */
-
-  
 
   #home .container {
     margin: 0 auto;
